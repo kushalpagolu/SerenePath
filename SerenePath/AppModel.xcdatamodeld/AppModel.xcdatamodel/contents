@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21754" systemVersion="22E252" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Appointment" representedClassName="Appointment" syncable="YES" codeGenerationType="class">
+        <attribute name="appointmentDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="appointmentEndTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="appointmentTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="status" optional="YES" attributeType="String"/>
+        <relationship name="topatient" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Patient" inverseName="toAppointment" inverseEntity="Patient"/>
+        <relationship name="toservice" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Service" inverseName="servicetoappointment" inverseEntity="Service"/>
+        <relationship name="totherapist" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Therapist" inverseName="toAppointment" inverseEntity="Therapist"/>
+    </entity>
+    <entity name="Diagnosis" representedClassName="Diagnosis" syncable="YES" codeGenerationType="class">
+        <attribute name="descriptionText" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="patient" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformerName" customClassName="Patient"/>
+        <attribute name="therapist" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformerName" customClassName="Therapist"/>
+        <relationship name="toPatient" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Patient" inverseName="toDiagnosis" inverseEntity="Patient"/>
+        <relationship name="toRecording" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Recording" inverseName="recordingtoDiagnosis" inverseEntity="Recording"/>
+        <relationship name="toService" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Service" inverseName="servicetodiagnosis" inverseEntity="Service"/>
+        <relationship name="toTherapist" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Therapist" inverseName="toDiagnosis" inverseEntity="Therapist"/>
+    </entity>
+    <entity name="Patient" representedClassName="Patient" syncable="YES" codeGenerationType="class">
+        <attribute name="appointments" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformerName" customClassName="Appointment"/>
+        <attribute name="contactNumber" optional="YES" attributeType="String"/>
+        <attribute name="dateOfBirth" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="email" optional="YES" attributeType="String"/>
+        <attribute name="firstName" optional="YES" attributeType="String"/>
+        <attribute name="gender" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="lastName" optional="YES" attributeType="String"/>
+        <attribute name="password" optional="YES" attributeType="String"/>
+        <attribute name="role" optional="YES" attributeType="String"/>
+        <attribute name="service" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformerName" customClassName="Service"/>
+        <attribute name="therapist" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformerName" customClassName="Therapist"/>
+        <attribute name="username" optional="YES" attributeType="String"/>
+        <relationship name="patienttoservice" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Service" inverseName="servicetopatient" inverseEntity="Service"/>
+        <relationship name="toAppointment" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Appointment" inverseName="topatient" inverseEntity="Appointment"/>
+        <relationship name="toDiagnosis" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Diagnosis" inverseName="toPatient" inverseEntity="Diagnosis"/>
+        <relationship name="toRecording" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Recording" inverseName="recordingPatient" inverseEntity="Recording"/>
+        <relationship name="toTherapist" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Therapist" inverseName="toPatient" inverseEntity="Therapist"/>
+        <relationship name="touser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="topatient" inverseEntity="User"/>
+    </entity>
+    <entity name="Recording" representedClassName="Recording" syncable="YES" codeGenerationType="class">
+        <attribute name="dateRecorded" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="descriptionText" optional="YES" attributeType="String"/>
+        <attribute name="duration" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="recordingUrl" optional="YES" attributeType="String"/>
+        <attribute name="thumbnailUrl" optional="YES" attributeType="String"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <relationship name="recordingPatient" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Patient" inverseName="toRecording" inverseEntity="Patient"/>
+        <relationship name="recordingTherapist" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Therapist" inverseName="toRecording" inverseEntity="Therapist"/>
+        <relationship name="recordingtoDiagnosis" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Diagnosis" inverseName="toRecording" inverseEntity="Diagnosis"/>
+        <relationship name="recordingtoService" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Service" inverseName="servicetorecording" inverseEntity="Service"/>
+    </entity>
+    <entity name="Service" representedClassName="Service" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="price" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="serviceDescription" optional="YES" attributeType="String"/>
+        <attribute name="serviceDuration" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="serviceImage" optional="YES" attributeType="String"/>
+        <relationship name="servicetoappointment" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Appointment" inverseName="toservice" inverseEntity="Appointment"/>
+        <relationship name="servicetodiagnosis" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Diagnosis" inverseName="toService" inverseEntity="Diagnosis"/>
+        <relationship name="servicetopatient" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Patient" inverseName="patienttoservice" inverseEntity="Patient"/>
+        <relationship name="servicetorecording" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Recording" inverseName="recordingtoService" inverseEntity="Recording"/>
+        <relationship name="servicetotherapist" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Therapist" inverseName="toService" inverseEntity="Therapist"/>
+    </entity>
+    <entity name="Therapist" representedClassName="Therapist" syncable="YES" codeGenerationType="class">
+        <attribute name="appointments" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformerName" customClassName="Appointment"/>
+        <attribute name="availability" optional="YES" attributeType="String"/>
+        <attribute name="bio" optional="YES" attributeType="String"/>
+        <attribute name="contactNumber" optional="YES" attributeType="String"/>
+        <attribute name="dateOfBirth" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="email" optional="YES" attributeType="String"/>
+        <attribute name="firstName" optional="YES" attributeType="String"/>
+        <attribute name="gender" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="lastName" optional="YES" attributeType="String"/>
+        <attribute name="password" optional="YES" attributeType="String"/>
+        <attribute name="role" optional="YES" attributeType="String"/>
+        <attribute name="service" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformerName" customClassName="Service"/>
+        <attribute name="specialization" optional="YES" attributeType="String"/>
+        <attribute name="username" optional="YES" attributeType="String"/>
+        <relationship name="toAppointment" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Appointment" inverseName="totherapist" inverseEntity="Appointment"/>
+        <relationship name="toDiagnosis" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Diagnosis" inverseName="toTherapist" inverseEntity="Diagnosis"/>
+        <relationship name="toPatient" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Patient" inverseName="toTherapist" inverseEntity="Patient"/>
+        <relationship name="toRecording" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Recording" inverseName="recordingTherapist" inverseEntity="Recording"/>
+        <relationship name="toService" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Service" inverseName="servicetotherapist" inverseEntity="Service"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="therapist" inverseEntity="User"/>
+    </entity>
+    <entity name="User" representedClassName="User" syncable="YES" codeGenerationType="class">
+        <attribute name="contactNumber" optional="YES" attributeType="String"/>
+        <attribute name="dateOfBirth" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="email" optional="YES" attributeType="String"/>
+        <attribute name="firstName" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="lastName" optional="YES" attributeType="String"/>
+        <attribute name="password" optional="YES" attributeType="String"/>
+        <attribute name="role" optional="YES" attributeType="String"/>
+        <attribute name="username" optional="YES" attributeType="String"/>
+        <relationship name="therapist" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Therapist" inverseName="user" inverseEntity="Therapist"/>
+        <relationship name="topatient" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Patient" inverseName="touser" inverseEntity="Patient"/>
+    </entity>
+</model>
